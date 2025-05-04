@@ -1,12 +1,12 @@
 {
-  "name": "Astrogon",
+  "name": "farmday-landing",
   "version": "1.0.0",
   "description": "Template.",
-  "author": "Jane Doe",
-  "license": "MIT",
+  "author": "Club Calima",
+  "license": "SEE LICENSE IN LICENSE",
   "packageManager": "npm@10.8.2",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --port=5700",
     "build": "astro build",
     "postbuild": "pagefind --site dist",
     "format": "prettier -w ./src"

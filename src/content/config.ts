@@ -1,8 +1,15 @@
 import { defineCollection, reference, z } from "astro:content";
 import { glob } from "astro/loaders";
+import { markketplace } from "@/config";
 
 // May also need to update /src/types/index.d.ts when updating this file
 // When updating the set of searchable collections, update collectionList in /src/pages/search.astro
+
+import { strapiLoader } from "../strapi-loader";
+
+const stores = defineCollection({
+  loader: strapiLoader({ contentType: 'store' })
+})
 
 const searchable = z.object({
   title: z.string(),
@@ -162,6 +169,15 @@ const terms = defineCollection({
   schema: searchable,
 });
 
+
+const store = defineCollection({
+  loader: strapiLoader({
+    contentType: "store",
+    filter: `filters[slug][$eq]=${markketplace.store_slug}`,
+    populate: 'SEO.socialImage,Logo,URLS,Favicon,Cover'
+  }),
+});
+
 // Export collections
 export const collections = {
   about,
@@ -174,4 +190,5 @@ export const collections = {
   portfolio,
   recipes,
   terms,
+  stores,
 };

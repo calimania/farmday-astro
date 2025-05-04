@@ -4,10 +4,13 @@ import { markdownify } from "@lib/textConverter";
 import Button from "@components/common/Button.astro";
 import type { HomeEntry } from "@/types";
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 
 interface Props {
   entry: HomeEntry;
 }
+
+const stores = getCollection("store");
 
 const { entry } = Astro.props;
 const { image, imageAlt, title, content, button } = entry.data;
@@ -23,15 +26,14 @@ const { image, imageAlt, title, content, button } = entry.data;
             image && (
               <div class="blur-[0px]">
                 <Image
-                class="mb-6 w-64"
-                src={image}
-                alt={imageAlt}
-                width={1024}
-                height={1024}
-                loading="eager"
-              />
+                  class="mb-6 w-64"
+                  src={image}
+                  alt={imageAlt}
+                  width={1024}
+                  height={1024}
+                  loading="eager"
+                />
               </div>
-              
             )
           }
           <h1 set:html={markdownify(title)} class="mb-4" />
