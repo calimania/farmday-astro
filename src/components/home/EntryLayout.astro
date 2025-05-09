@@ -4,13 +4,10 @@ import { markdownify } from "@lib/textConverter";
 import Button from "@components/common/Button.astro";
 import type { HomeEntry } from "@/types";
 import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
 
 interface Props {
   entry: HomeEntry;
 }
-
-const stores = getCollection("store");
 
 const { entry } = Astro.props;
 const { image, imageAlt, title, content, button } = entry.data;
