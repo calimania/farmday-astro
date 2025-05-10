@@ -9,9 +9,11 @@ import remarkToc from "remark-toc";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 
+import { markketplace } from './src/config';
+
 // https://astro.build/config
 export default defineConfig({
-  site: "https://janedoe.com",
+  site: markketplace.url,
   base: "/",
   trailingSlash: "ignore",
   prefetch: {
@@ -33,7 +35,7 @@ export default defineConfig({
       themes: { // https://shiki.style/themes
         light: "light-plus",
         dark: "dark-plus",
-      } 
+      }
     },
     extendDefaultPlugins: true
   },
