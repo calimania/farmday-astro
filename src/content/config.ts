@@ -8,8 +8,8 @@ import { markketplace } from "@/config";
 import { strapiLoader } from "../strapi-loader";
 
 const stores = defineCollection({
-  loader: strapiLoader({ contentType: 'store' })
-})
+  loader: strapiLoader({ contentType: 'store', filter: `slug=${markketplace.store_slug}` })
+});
 
 const searchable = z.object({
   title: z.string(),
@@ -178,6 +178,14 @@ const store = defineCollection({
   }),
 });
 
+const pages = defineCollection({
+  loader: strapiLoader({
+    contentType: "page",
+    filter: `filters[store][slug][$eq]=${markketplace.store_slug}`,
+    populate: 'SEO.socialImage,albums'
+  }),
+});
+
 // Export collections
 export const collections = {
   about,
@@ -191,4 +199,6 @@ export const collections = {
   recipes,
   terms,
   stores,
+  store,
+  pages,
 };

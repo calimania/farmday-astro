@@ -4,9 +4,11 @@ import Footer from "@components/base/Footer.astro";
 import Header from "@components/base/Header.astro";
 import ObserverScript from "@components/base/ObserverScript.astro";
 import "@/styles/main.scss";
+import "@/styles/blocks.scss";
 import { ClientRouter } from "astro:transitions";
 import Background from "@/components/base/Background.astro";
 import { Tooltips } from "astro-tooltips";
+import { getCollection } from "astro:content";
 
 // types for frontmatters
 export interface Props {
@@ -16,14 +18,17 @@ export interface Props {
   noindex?: boolean;
   canonical?: string;
 }
+import { markketplace } from "../../config";
+
+const store = (await getCollection("store"))?.[0]?.data;
 
 const { title, description, image, noindex, canonical } = Astro.props;
 
-const siteTitle = "Astrogon";
-const siteDescription = "Astrogon is a simple and elegant Astro theme.";
-const siteImage = "@assets/og-image.png";
-const siteAuthor = "Jane Doe";
-const baseUrl = "https://janedoe.com";
+const siteTitle = store.title;
+const siteDescription = store?.SEO?.metaDescription;
+const siteImage = store?.SEO?.socialImage?.url;
+const siteAuthor = store?.SEO?.metaAuthor;
+const baseUrl = markketplace.url;
 ---
 
 <!DOCTYPE html>
@@ -33,23 +38,21 @@ const baseUrl = "https://janedoe.com";
     <link
       rel="apple-touch-icon"
       sizes="180x180"
-      href="/favicon/apple-touch-icon.png"
+      href={store?.Favicon?.url || "/favicon/apple-touch-icon.png"}
     />
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="/favicon/favicon-32x32.png"
+      href={store?.Favicon?.url || "/favicon/favicon-32x32.png"}
     />
     <link
       rel="icon"
       type="image/png"
       sizes="16x16"
-      href="/favicon/favicon-16x16.png"
+      href={store?.Favicon?.url || "/favicon/favicon-16x16.png"}
     />
-    
     <link rel="sitemap" href="/sitemap-index.xml" />
-
     <meta name="theme-name" content="pages" />
     <meta name="msapplication-TileColor" content="#000000" />
     <meta
@@ -119,14 +122,16 @@ const baseUrl = "https://janedoe.com";
       defer
       src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"
       integrity="sha384-Rma6DA2IPUwhNxmrB/7S3Tno0YY7sFu9WSYMCuulLhIqYSGZ2gKCJWIqhBWqMQfh"
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous"
+    ></script>
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
       integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh"
       crossorigin="anonymous"
-      onload="renderMathInElement(document.body);"></script>
-      
+      onload="renderMathInElement(document.body);"
+    ></script>
+
     <!-- https://docs.astro.build/en/guides/view-transitions -->
     <ClientRouter fallback="swap" />
     <Tooltips interactive={false} delay={[333, 0]} />
@@ -135,7 +140,7 @@ const baseUrl = "https://janedoe.com";
     <Background />
     <Header />
     <main id="main-content" class="flex-1">
-      <slot/>
+      <slot />
     </main>
     <Footer />
     <!-- <ObserverScript /> -->
