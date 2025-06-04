@@ -18,6 +18,7 @@
     "@astrojs/sitemap": "^3.3.0",
     "@astrojs/tailwind": "^6.0.2",
     "@radix-ui/react-scroll-area": "^1.1.0",
+    "@tabler/icons-react": "^3.34.0",
     "astro": "^5.7.2",
     "astro-auto-import": "^0.4.2",
     "astro-tooltips": "^0.6.2",
