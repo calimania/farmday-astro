@@ -186,10 +186,28 @@ const pages = defineCollection({
   }),
 });
 
+const articles = defineCollection({
+  loader: strapiLoader({
+    contentType: "article",
+    filter: `filters[store][slug][$eq]=${markketplace.store_slug}`,
+    populate: 'SEO.socialImage'
+  }),
+});
+
+const products = defineCollection({
+  loader: strapiLoader({
+    contentType: "product",
+    filter: `filters[stores][slug][$eq]=${markketplace.store_slug}`,
+    populate: 'SEO.socialImage'
+  }),
+});
+
 // Export collections
 export const collections = {
   about,
+  articles,
   authors,
+  products,
   blog,
   docs,
   home,

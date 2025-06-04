@@ -1,0 +1,49 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@components/base/BaseLayout.astro";
+import Blocks from "@components/ui.content";
+import { Image } from "astro:assets";
+import type { Page } from "@/markket";
+
+import SubscribeForm from "../components/subscribe.form";
+
+const page = (await getCollection("pages"))?.find(
+  (page) => page?.data?.slug === "newsletter"
+)?.data;
+
+const store = (await getCollection("store"))?.[0]?.data;
+---
+
+<BaseLayout>
+  <section class="section">
+    <div class="container">
+      <div class="row justify-center">
+        <div class="text-center lg:col-8">
+          {
+            store?.Logo?.url && (
+              <div class="blur-[0px]">
+                <Image
+                  class="mb-6 w-64"
+                  src={store?.Logo?.url}
+                  alt={store?.Logo?.alternativeText || store?.title}
+                  width={1024}
+                  height={1024}
+                  loading="eager"
+                />
+              </div>
+            )
+          }
+          <h1 class="mb-4">{page?.Title}</h1>
+          <div
+            class="mb-8 mt-4 bg-white bg-opacity-90 rounded-sm text-left p-6"
+          >
+            <Blocks params={{ page: page as Page }} />
+          </div>
+        </div>
+        <div class="relative pt-20 pb-16 px-4">
+         <SubscribeForm client:load store={store as any} />
+       </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
