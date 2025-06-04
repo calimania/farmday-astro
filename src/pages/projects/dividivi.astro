@@ -1,0 +1,99 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@components/base/BaseLayout.astro";
+import { Image } from "astro:assets";
+import type { Product } from "@/markket";
+import { markdownify } from "@lib/textConverter";
+
+const product = (await getCollection("products"))?.find(
+  (product) => product?.data?.slug === "dividivi"
+)?.data as any as Product;
+
+const store = (await getCollection("store"))?.[0]?.data;
+---
+
+<BaseLayout>
+  <section class="section min-h-screen py-12 bg-opacity-15">
+    <div class="container mx-auto">
+      <div class="row justify-center">
+        <div class="text-center lg:col-10 mx-auto">
+          {
+            store?.Logo?.url && (
+              <div class="flex justify-center mb-8">
+                <Image
+                  class="w-32 h-32 object-contain rounded-full shadow-lg border-4 border-white bg-white"
+                  src={store?.Logo?.url}
+                  alt={store?.Logo?.alternativeText || store?.title}
+                  width={256}
+                  height={256}
+                  loading="eager"
+                />
+              </div>
+            )
+          }
+          <h1 class="mb-4 text-4xl font-extrabold text-gray-900 drop-shadow">
+            {product?.Name || "DiviDivi"}
+          </h1>
+          <div
+            class="mb-8 mt-4 light:bg-white/80 rounded-xl shadow-lg text-left p-8 mx-auto max-w-2xl bg-gradient-to-br from-blue-50 to-green-50"
+          >
+            <div set:html={markdownify(product?.Description || "", true)} />
+          </div>
+          {console.log(product)}
+          {
+            !!product?.Slides?.length && (
+              <div class="mb-12">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Gallery</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                  {product.Slides.map((slide) => (
+                    <div class="rounded-xl overflow-hidden shadow-lg bg-white hover:scale-105 transition-transform duration-300 group">
+                      <img
+                        src={slide.formats?.medium?.url || slide.url}
+                        alt={slide.alternativeText || slide.name}
+                        class="w-full h-56 object-cover group-hover:opacity-90 transition-opacity"
+                        loading="lazy"
+                      />
+                      <div class="p-4">
+                        <div class="text-xs text-gray-500 mt-1">
+                          <a href={slide?.url}>
+                            {slide.caption ||
+                              slide.alternativeText ||
+                              slide.name}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          }
+
+          <div class="mt-8 flex flex-wrap justify-center gap-4">
+            <!-- {
+              product?.usd_price && (
+                <span class="inline-block bg-gradient-to-r from-green-400 to-blue-500 text-white px-5 py-2 rounded-full font-bold shadow">
+                  ${product.usd_price}
+                </span>
+              )
+            } -->
+            <!-- {
+              product?.SKU && (
+                <span class="inline-block bg-gray-100 text-gray-700 px-4 py-2 rounded-full font-mono text-xs shadow">
+                  SKU: {product.SKU}
+                </span>
+              )
+            } -->
+            <!-- {
+              product?.quantity !== null && (
+                <span class="inline-block bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-xs shadow">
+                  In Stock: {product.quantity}
+                </span>
+              )
+            } -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
