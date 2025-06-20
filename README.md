@@ -1,6 +1,6 @@
 
 <div align="center">
-  <img src="src/assets/astrogon-logo.svg" style="width:80%;" alt="Astrogon Logo" align="center" />
+  <img src="https://markketplace.nyc3.digitaloceanspaces.com/uploads/84dfae95197adb92bdd894640afbdf10.jpg" style="width:80%;" alt="Farmday Illustration" align="center" />
 </div>
 
 ---

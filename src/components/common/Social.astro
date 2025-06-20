@@ -14,6 +14,8 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 
+import { SiCrunchbase } from "react-icons/si";
+
 interface Props {
   links?: SocialLinks;
 }
@@ -53,6 +55,20 @@ const iconClass =
           >
             <span class="sr-only">Email</span>
             <FaEnvelope className="w-6 h-6" />
+          </a>
+        </li>
+      )}
+      {links.crunchbase && (
+        <li class={liClass}>
+          <a
+            class={iconClass}
+            aria-label="Crunchbase"
+            href={links.facebook}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+          >
+            <span class="sr-only">Crunchbase</span>
+            <SiCrunchbase className="w-6 h-6" />
           </a>
         </li>
       )}
