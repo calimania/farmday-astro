@@ -84,3 +84,9 @@ dist/
 .json/
 
 .bevel
+
+*.gen
+*.gen.*
+
+**/*.min.*
+.tanstack
