@@ -7,9 +7,9 @@ import type { Product } from "@/markket";
 import { markdownify } from "@lib/textConverter";
 
 const { slug } = Astro.params;
-const product = ((await getCollection("products"))?.find(
+const product = (await getCollection("products"))?.find(
   (p) => p?.data?.slug === slug
-)?.data as unknown) as Product;
+)?.data as unknown as Product;
 
 export async function getStaticPaths() {
   const products = await getCollection("products");
@@ -23,40 +23,56 @@ const store = (await getCollection("store"))?.[0]?.data;
 ---
 
 <BaseLayout>
-  <section class="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 py-12">
+  <h1>{slug}</h1>
+  <section
+    class="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 py-12"
+  >
     <div class="container mx-auto">
       <div class="max-w-3xl mx-auto bg-white/80 rounded-2xl shadow-xl p-8">
         <div class="flex flex-col items-center mb-8">
-          {store?.Logo?.url && (
-            <Image
-              class="w-20 h-20 object-contain rounded-full shadow border-2 border-white bg-white mb-4"
-              src={store?.Logo?.url}
-              alt={store?.Logo?.alternativeText || store?.title}
-              width={128}
-              height={128}
-              loading="eager"
-            />
-          )}
-          <h1 class="text-4xl font-extrabold text-gray-900 mb-2">{product?.Name}</h1>
+          {
+            store?.Logo?.url && (
+              <Image
+                class="w-20 h-20 object-contain rounded-full shadow border-2 border-white bg-white mb-4"
+                src={store?.Logo?.url}
+                alt={store?.Logo?.alternativeText || store?.title}
+                width={128}
+                height={128}
+                loading="eager"
+              />
+            )
+          }
+          <h1 class="text-4xl font-extrabold text-gray-900 mb-2">
+            {product?.Name}
+          </h1>
           <div class="flex flex-wrap gap-3 justify-center mt-2">
-            {product?.usd_price && (
-              <span class="bg-gradient-to-r from-green-400 to-blue-500 text-white px-4 py-1 rounded-full font-bold shadow">
-                ${product.usd_price}
-              </span>
-            )}
-            {product?.SKU && (
-              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-mono text-xs shadow">
-                SKU: {product.SKU}
-              </span>
-            )}
-            {product?.quantity !== null && (
-              <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs shadow">
-                In Stock: {product.quantity}
-              </span>
-            )}
+            {
+              product?.usd_price && (
+                <span class="bg-gradient-to-r from-green-400 to-blue-500 text-white px-4 py-1 rounded-full font-bold shadow">
+                  ${product.usd_price}
+                </span>
+              )
+            }
+            {
+              product?.SKU && (
+                <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-mono text-xs shadow">
+                  SKU: {product.SKU}
+                </span>
+              )
+            }
+            {
+              product?.quantity !== null && (
+                <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs shadow">
+                  In Stock: {product.quantity}
+                </span>
+              )
+            }
           </div>
         </div>
         <div class="prose prose-lg max-w-none mb-8 text-gray-800">
           <div set:html={markdownify(product?.Description || "", true)} />
         </div>
-      </BaseLayout>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
