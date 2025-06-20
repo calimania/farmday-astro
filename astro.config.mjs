@@ -8,6 +8,7 @@ import remarkCollapse from "remark-collapse";
 import remarkToc from "remark-toc";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
+import { tanstackRouter } from '@tanstack/router-plugin/vite';
 
 import { markketplace } from './src/config';
 
@@ -18,6 +19,19 @@ export default defineConfig({
   trailingSlash: "ignore",
   prefetch: {
     prefetchAll: true
+  },
+  vite: {
+    plugins: [
+      // tailwindcss(),
+      tanstackRouter({
+        target: 'react',
+        autoCodeSplitting: true,
+        verboseFileRoutes: false,
+        routesDirectory: "./src/routes",
+        generatedRouteTree: "./src/routes/routeTree.gen.ts",
+        routeFileIgnorePrefix: "-",
+      }),
+    ]
   },
   integrations: [react(), sitemap(), tailwind({
     config: {
