@@ -3,14 +3,16 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@components/base/BaseLayout.astro";
 import Blocks from "@components/ui.content";
 import { Image } from "astro:assets";
-import type { Page } from "@/markket";
+import type { Page, Store } from "@/markket";
+import MagicLinkForm from "@components/auth/magic.form";
 
 const pages = await getCollection("pages");
 
-const magicPage = pages?.find(page => page?.data?.slug == 'auth.magic')?.data;
+const magicPage = pages?.find((page) => page?.data?.slug == "auth.magic")
+  ?.data as Page;
 
-const store = (await getCollection("store"))?.[0]?.data;
-
+const storeEntry = (await getCollection("store"))?.[0];
+const store = storeEntry?.data as unknown as Store;
 ---
 
 <BaseLayout>
@@ -36,10 +38,12 @@ const store = (await getCollection("store"))?.[0]?.data;
           <div
             class="mb-8 mt-4 bg-white bg-opacity-90 rounded-sm text-left p-6"
           >
-            <Blocks params={{ page: magicPage as Page }} />
+            <Blocks params={{ page: magicPage }} />
+
+            <MagicLinkForm client:load store={store} page={magicPage} />
           </div>
+        </div>
       </div>
     </div>
   </section>
-
 </BaseLayout>
