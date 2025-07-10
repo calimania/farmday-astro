@@ -51,18 +51,8 @@ export interface Store {
   publishedAt: string;
   STRIPE_CUSTOMER_ID: string;
   Cover: Media;
-  Logo: {
-    url: string;
-    formats: {
-      small: {
-        url: string;
-      }
-    }
-  };
-  Favicon: {
-
-    url: string;
-  },
+  Logo: Media;
+  Favicon: Media;
   URLS: {
     id: number;
     Label: string;

@@ -16,11 +16,12 @@ const relatedPages = pages
   )
   .map((page) => page.data);
 
-const href = (page: Page) => {
+export const href = (page: Page) => {
   const map: Record<string, string> = {
     newsletter: "/subscribe",
     products: "/projects",
     blog: "/blog",
+    events: "/events",
     home: "/",
     "auth.magic": "/auth/magic",
   };
@@ -29,7 +30,7 @@ const href = (page: Page) => {
     return map[page.slug as string];
   }
 
-  return `${!["blog", "products", "newsletter", "events"].includes(page.slug) ? "/about/" : "/"}${page.slug}`;
+  return `/about/${page.slug}`;
 };
 
 const store = (await getCollection("store"))?.[0]?.data;

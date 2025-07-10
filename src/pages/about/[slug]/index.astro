@@ -1,0 +1,124 @@
+---
+import { IconChevronsLeft } from "@tabler/icons-react";
+import { getCollection } from "astro:content";
+import BaseLayout from "@components/base/BaseLayout.astro";
+import Blocks from "@components/ui.content";
+import { Image } from "astro:assets";
+import type { Store, Page } from "@/markket";
+export interface Props {
+  page: Page;
+  store: Store;
+  relatedPages: Page[];
+}
+
+export async function getStaticPaths() {
+  const pages = await getCollection("pages");
+  const stores = await getCollection("store");
+  const store = stores?.[0]?.data as any as Store;
+
+  const relatedPages = pages
+    ?.filter(
+      (page) =>
+        page?.data?.slug !== "about" && !page?.data?.SEO?.excludeFromSearch
+    )
+    .map((page) => page.data);
+
+  return pages
+    .filter((page) => page.data.slug !== "about" && page.data.slug !== "home")
+    .map((page) => ({
+      params: {
+        slug: page.data.slug,
+      },
+      props: {
+        page: page.data,
+        store,
+        relatedPages,
+      },
+    }));
+}
+
+const { page, store, relatedPages } = Astro.props;
+
+// Find the About page for related
+const aboutPage = await getCollection("pages").then(pages => pages.find(p => p.data.slug === "about")?.data);
+// Exclude current page and About from relatedPages, then pick 2 more
+const moreRelated = relatedPages.filter(p => p.slug !== page.slug && p.slug !== "about").slice(0, 2);
+const relatedToShow = [aboutPage, ...moreRelated].filter(Boolean);
+---
+
+<BaseLayout>
+  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-lg z-50 border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+        <a
+          href="/about"
+          class="text-gray-600 hover:text-blue-600 transition-colors inline-flex items-center gap-2 group"
+        >
+          <IconChevronsLeft
+            size={16}
+            className="group-hover:-translate-x-1 transition-transform"
+          />
+          <span>Back to About</span>
+        </a>
+        {store?.Logo?.url && (
+          <Image
+            src={store.Logo.url}
+            alt={store.Logo.alternativeText || store.title}
+            class="h-10 w-auto object-contain mx-auto"
+            width={80}
+            height={40}
+            loading="eager"
+          />
+        )}
+      </div>
+    </div>
+
+    <div class="relative pt-28 pb-16 px-4">
+      <div class="max-w-4xl mx-auto">
+        <h1
+          class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text"
+        >
+          {page.Title}
+        </h1>
+        {page?.Content && (
+          <div class="prose prose-lg max-w-none relative z-10">
+            <div class="rounded-2xl bg-white/70 backdrop-blur-md shadow-lg p-8">
+              <Blocks params={{ page }} />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+
+    {page?.SEO?.socialImage?.url && (
+      <div class="max-w-4xl mx-auto mb-10 px-4">
+        <div class="relative rounded-2xl overflow-hidden shadow-xl group">
+          <img
+            src={page.SEO.socialImage.url}
+            alt={page.Title}
+            class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-700"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        </div>
+      </div>
+    )}
+
+    <div class="max-w-4xl mx-auto px-4 pb-16">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text">Related Pages</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {relatedToShow.map((rel) => (
+          <a
+            href={`/about/${rel.slug}`}
+            class="block rounded-xl bg-white/80 shadow-md hover:shadow-xl transition p-6 text-center border border-gray-100 hover:border-blue-200"
+          >
+            <div class="font-bold text-lg mb-2 text-blue-700">{rel.Title}</div>
+            {rel.SEO?.socialImage?.url && (
+              <img src={rel.SEO.socialImage.url} alt={rel.Title} class="w-full h-32 object-cover rounded-lg mb-2" />
+            )}
+            <div class="text-gray-500 text-sm line-clamp-2">{rel.Description || rel.SEO?.description}</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>
