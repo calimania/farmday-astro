@@ -1,0 +1,45 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@components/base/BaseLayout.astro";
+import { Image } from "astro:assets";
+import type { Page, Store } from "@/markket";
+import MagicLinkPage from "@components/auth/magic.page";
+
+const pages = await getCollection("pages");
+
+const magicPage = pages?.find((page) => page?.data?.slug == "auth.magic")
+  ?.data as Page;
+
+const storeEntry = (await getCollection("store"))?.[0];
+const store = storeEntry?.data as unknown as Store;
+---
+
+<BaseLayout>
+  <section class="about-page">
+    <div class="container">
+      <div class="row justify-center">
+        <div class="text-center lg:col-6">
+          {
+            store?.Logo?.url && (
+              <div class="blur-[0px]">
+                <Image
+                  class="mb-2"
+                  src={store?.Logo?.url}
+                  alt={store?.Logo?.alternativeText || store?.title}
+                  width={60}
+                  height={600}
+                  loading="eager"
+                />
+              </div>
+            )
+          }
+          <h1 class="mb-4 text-sm">{store?.title}</h1>
+          <!-- bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center p-4 -->
+          <div class="justify-center mb-8 mt-4 rounded-sm text-left p-6">
+            <MagicLinkPage client:load store={store} page={magicPage} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

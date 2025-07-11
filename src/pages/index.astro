@@ -37,7 +37,7 @@ const store = (await getCollection("store"))?.[0]?.data;
               <Button
                 label={button.Label}
                 link={button.URL}
-                newtab={!button.URL?.includes("caliman")}
+                newtab={button.URL?.startsWith("https")}
                 hoverInvert
                 color=""
               />
