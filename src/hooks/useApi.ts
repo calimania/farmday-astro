@@ -9,6 +9,8 @@ export const queryKeys = {
   // User queries
   me: ['user', 'me'] as const,
 
+  store: ['store'] as const,
+
   // Orders queries
   orders: (filters?: any) => ['orders', filters] as const,
   order: (id: string) => ['orders', id] as const,
@@ -29,6 +31,17 @@ export function useMe() {
   return useQuery({
     queryKey: queryKeys.me,
     queryFn: api.getMe,
+    // User data should be fresh
+    staleTime: 1000 * 60 * 2, // 2 minutes
+    // Retry less for user data
+    retry: 2,
+  });
+}
+
+export function useStore() {
+  return useQuery({
+    queryKey: queryKeys.store,
+    queryFn: api.getStore,
     // User data should be fresh
     staleTime: 1000 * 60 * 2, // 2 minutes
     // Retry less for user data

@@ -444,7 +444,7 @@ const ProfilePage: React.FC = () => {
               <span className="text-gray-400">→</span>
             </button>
 
-            <button className="w-full flex items-center justify-between p-4 border border-red-200 rounded-xl hover:bg-red-50 transition-colors text-red-600">
+            {/* <button className="w-full flex items-center justify-between p-4 border border-red-200 rounded-xl hover:bg-red-50 transition-colors text-red-600">
               <div className="flex items-center space-x-3">
                 <IconTrash className="w-5 h-5" />
                 <div className="text-left">
@@ -453,7 +453,7 @@ const ProfilePage: React.FC = () => {
                 </div>
               </div>
               <span className="text-red-400">→</span>
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

@@ -35,7 +35,7 @@ export async function apiRequest<T>(
 // Specific API functions
 export const api = {
   // Test endpoint
-  getMarkket: () => apiRequest<{ message: string }>('/markket'),
+  getMarkket: () => apiRequest<{ message: string }>('/api/markket'),
 
   // User endpoints
   getMe: () => {
@@ -53,12 +53,14 @@ export const api = {
     }>(`/api/users/me?populate=avatar`)
   },
 
-  updateProfile: (data: any) => apiRequest('/me', {
+  updateProfile: (data: any) => apiRequest('/api/users/me', {
     method: 'PUT',
     body: JSON.stringify(data),
   }),
 
-  getOrders: () => apiRequest(`/orders/mine`),
+  getOrders: () => apiRequest(`/api/orders/mine`),
+
+  getStore: () => apiRequest(`/api/stores/?filters[slug]=${markketplace.store_slug}&populate[]=Favicon`),
 
   // Orders endpoints
   // getOrders: (params?: {

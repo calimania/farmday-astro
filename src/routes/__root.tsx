@@ -2,12 +2,14 @@ import React, { useState, } from 'react';
 import type { QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {
-	Link,
+	useNavigate,
 	Outlet,
 	createRootRouteWithContext,
+	useRouterState,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import type { AstroGlobal } from 'astro'
+import { useStore } from '../hooks/useApi';
 
 export const Route = createRootRouteWithContext<{
 	astroContext: AstroGlobal | undefined
@@ -30,23 +32,37 @@ import {
 interface LayoutProps {
 	children: React.ReactNode;
 	activeTab: 'orders' | 'profile';
-	onTabChange: (tab: 'orders' | 'profile') => void;
 }
 
-function Layout({ children, activeTab, onTabChange }: LayoutProps) {
+function Layout({ children, activeTab, }: LayoutProps) {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
+	const router = useRouterState();
+	const navigate = useNavigate({ from: router.location.pathname })
+
+	const {
+		data: storeResponse,
+		isLoading: storeLoading,
+		isError: storeError,
+		error: storeErrorDetails
+	} = useStore();
+
+	const store = storeResponse?.data?.[0];
+
+	console.log({ store })
 
 	const navigation = [
 		{
 			id: 'orders' as const,
 			name: 'My Investments',
 			icon: IconReceipt,
-			description: 'View your fractional ownership purchases'
+			description: 'View your fractional ownership purchases',
+			path: '/portal/investments'
 		},
 		{
 			id: 'profile' as const,
 			name: 'Profile',
 			icon: IconUser,
+			path: '/portal/profile',
 			description: 'Manage your account settings'
 		},
 	];
@@ -74,12 +90,14 @@ function Layout({ children, activeTab, onTabChange }: LayoutProps) {
 					{/* Header */}
 					<div className="flex items-center justify-between p-6 border-b border-gray-200">
 						<div className="flex items-center space-x-3">
-							<div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center">
-								<IconTrendingUp className="w-6 h-6 text-white" />
-							</div>
+							{!store?.Favicon?.url
+								? (<div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center"><IconTrendingUp className="w-6 h-6 text-white" /> </div>)
+								: (
+									<img src={store?.Favicon?.url} className='w-12' />
+								)}
 							<div>
-								<h1 className="text-xl font-bold text-gray-900">FarmDay</h1>
-								<p className="text-sm text-gray-500">Investor Portal</p>
+								<h1 className="text-xl font-bold text-gray-900">{store?.title}</h1>
+								<p className="text-sm text-gray-500">Fun Farming Fintech</p>
 							</div>
 						</div>
 						<button
@@ -94,13 +112,15 @@ function Layout({ children, activeTab, onTabChange }: LayoutProps) {
 					<nav className="flex-1 p-6 space-y-2">
 						{navigation.map((item) => {
 							const Icon = item.icon;
-							const isActive = activeTab === item.id;
+							const isActive = router.location.pathname === item.path;
 
 							return (
 								<button
 									key={item.id}
 									onClick={() => {
-										onTabChange(item.id);
+										navigate({
+											to: item.path,
+										})
 										setSidebarOpen(false);
 									}}
 									className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left transition-all group ${isActive
