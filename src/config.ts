@@ -4,8 +4,10 @@ export const markketplace = {
   /** calimania/markket-next */
   markket: import.meta.env.MARKKET_URL || 'https://api.farmday.io',
   store_slug: import.meta.env.STORE_SLUG || 'farmday',
+  /** de.markket.place */
   markketplace: import.meta.env.MARKKETPLACE_URL || 'https://de.markket.place',
   posthog_id: import.meta.env.PUBLIC_POSTHOG_KEY || '',
+  /** farmday.io */
   url: import.meta.env.PUBLIC_URL || 'https://farmday.io',
   content: {
     title: 'Farmday',
