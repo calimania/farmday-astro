@@ -1,10 +1,9 @@
 ---
-import { IconChevronsLeft } from "@tabler/icons-react";
 import { getCollection } from "astro:content";
 import BaseLayout from "@components/base/BaseLayout.astro";
 import Blocks from "@components/ui.content";
-import { Image } from "astro:assets";
 import type { Store, Page } from "@/markket";
+import { href } from "../index.astro";
 export interface Props {
   page: Page;
   store: Store;
@@ -37,17 +36,20 @@ export async function getStaticPaths() {
     }));
 }
 
-const { page, store, relatedPages } = Astro.props;
+const { page, relatedPages } = Astro.props;
 
 // Find the About page for related
 const aboutPage = await getCollection("pages").then(
   (pages) => pages.find((p) => p.data.slug === "about")?.data
 );
+
 // Exclude current page and About from relatedPages, then pick 2 more
 const moreRelated = relatedPages
   .filter((p) => p.slug !== page.slug && p.slug !== "about")
   .slice(0, 2);
-const relatedToShow = [aboutPage, ...moreRelated].filter(Boolean);
+const relatedToShow = [aboutPage, ...moreRelated].filter(
+  Boolean
+) as unknown as Page[];
 ---
 
 <BaseLayout>
@@ -94,9 +96,9 @@ const relatedToShow = [aboutPage, ...moreRelated].filter(Boolean);
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {
-          relatedToShow.map((rel) => (
+          relatedToShow.map((rel: Page) => (
             <a
-              href={`/about/${rel.slug}`}
+              href={href(rel)}
               class="block rounded-xl bg-white/80 shadow-md hover:shadow-xl transition p-6 text-center border border-gray-100 hover:border-blue-200"
             >
               <div class="font-bold text-lg mb-2 text-blue-700">
@@ -110,7 +112,7 @@ const relatedToShow = [aboutPage, ...moreRelated].filter(Boolean);
                 />
               )}
               <div class="text-gray-500 text-sm line-clamp-2">
-                {rel.Description || rel.SEO?.description}
+                {rel.SEO?.metaDescription}
               </div>
             </a>
           ))
