@@ -198,7 +198,7 @@ const products = defineCollection({
   loader: strapiLoader({
     contentType: "product",
     filter: `filters[stores][slug][$eq]=${markketplace.store_slug}`,
-    populate: 'SEO.socialImage,Slides'
+    populate: 'SEO.socialImage,Slides,PRICES'
   }),
 });
 

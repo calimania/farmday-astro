@@ -373,4 +373,5 @@ export interface Product {
   PRICES?: Price[];
   Thumbnail?: ImageFormat;
   stores?: Store[];
+  Tag?: Tag[];
 }
