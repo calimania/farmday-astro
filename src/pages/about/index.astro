@@ -12,7 +12,7 @@ const aboutPage = pages?.find((page) => page?.data?.slug === "about")?.data;
 const relatedPages = pages
   ?.filter(
     (page) =>
-      !["about", "home"].includes(page?.data?.slug) &&
+      !["about", "home", "portal"].includes(page?.data?.slug) &&
       !page?.data?.SEO?.excludeFromSearch
   )
   .map((page) => page.data);
@@ -21,10 +21,11 @@ export const href = (page: Page) => {
   const map: Record<string, string> = {
     newsletter: "/subscribe",
     products: "/projects",
-    blog: "/blog",
+    blog: "/articles",
     events: "/events",
     home: "/",
     about: "/about",
+    portal: "/portal",
     "auth.magic": "/auth/magic",
   };
 

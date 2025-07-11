@@ -8,7 +8,7 @@ import { href } from "../about/index.astro";
 const pages = await getCollection("pages");
 
 const relatedPages = pages
-  ?.filter((page) => page?.data?.slug?.startsWith("auth"))
+  ?.filter((page) => /^(auth|portal)/.test(page?.data?.slug || ""))
   .map((page) => page.data);
 
 const store = (await getCollection("store"))?.[0]?.data;

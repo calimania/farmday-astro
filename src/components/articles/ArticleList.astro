@@ -1,0 +1,49 @@
+---
+import type { ArticleEntry as Article } from "@/types/index";
+import { IconRocket, IconSparkles } from "@tabler/icons-react";
+import ArticleCard from "./ArticleCard.astro";
+
+export interface Props {
+  articles: Article[];
+  title?: string;
+  showLoadMore?: boolean;
+}
+
+const { articles, showLoadMore = false } = Astro.props;
+---
+
+<section class="min-h-[60vh] py-4">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+      {articles.map((article) => <ArticleCard article={article} />)}
+    </div>
+    {
+      articles.length === 0 && (
+        <div class="text-center py-20">
+          <div class="p-4 bg-gray-100 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+            <IconRocket size={32} className="text-gray-400" />
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-4">No articles yet</h3>
+          <p class="text-gray-600">
+            We're cooking up some amazing content! Check back soon 🔥
+          </p>
+        </div>
+      )
+    }
+    {
+      showLoadMore && articles.length > 0 && (
+        <div class="text-center">
+          <button class="group px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+            <span class="flex items-center">
+              Load More Awesome Content
+              <IconSparkles
+                size={20}
+                className="ml-2 group-hover:rotate-12 transition-transform duration-300"
+              />
+            </span>
+          </button>
+        </div>
+      )
+    }
+  </div>
+</section>

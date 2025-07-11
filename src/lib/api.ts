@@ -1,4 +1,5 @@
 import { markketplace } from "@/config";
+import type { StoreEntry } from "@types/index";
 
 export async function apiRequest<T>(
   endpoint: string,
@@ -60,7 +61,7 @@ export const api = {
 
   getOrders: () => apiRequest(`/api/orders/mine`),
 
-  getStore: () => apiRequest(`/api/stores/?filters[slug]=${markketplace.store_slug}&populate[]=Favicon`),
+  getStore: (): Promise<{ data: StoreEntry[] }> => apiRequest(`/api/stores/?filters[slug]=${markketplace.store_slug}&populate[]=Favicon`),
 
   // Orders endpoints
   // getOrders: (params?: {

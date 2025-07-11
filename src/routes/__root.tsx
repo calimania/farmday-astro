@@ -9,7 +9,7 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import type { AstroGlobal } from 'astro'
-import { useStore } from '../hooks/useApi';
+import { useStore, useMe, useOrders } from '../hooks/useApi';
 
 export const Route = createRootRouteWithContext<{
 	astroContext: AstroGlobal | undefined
@@ -26,7 +26,8 @@ import {
 	IconMenu2,
 	IconX,
 	IconTrendingUp,
-	IconMapPin
+	IconMapPin,
+	IconHomeEco
 } from '@tabler/icons-react';
 
 interface LayoutProps {
@@ -45,9 +46,17 @@ function Layout({ }: LayoutProps) {
 		error: storeErrorDetails
 	} = useStore();
 
+	const {
+		data: myResponse,
+	} = useMe();
+
+	const {
+		data: ordersResponse,
+	} = useOrders();
+
 	const store = storeResponse?.data?.[0];
 
-	console.log({ store })
+	console.log({ store, myResponse, ordersResponse })
 
 	const navigation = [
 		{
@@ -156,11 +165,17 @@ function Layout({ }: LayoutProps) {
 								<span className="text-white font-semibold text-sm">JD</span>
 							</div>
 							<div className="flex-1">
-								<div className="font-medium text-gray-900">John Doe</div>
-								<div className="text-sm text-gray-500">Investor</div>
+								<div className="font-medium text-gray-900">{myResponse?.displayName || myResponse?.email}</div>
+								<div className="text-sm text-gray-500">{ordersResponse?.length ? 'Investor' : ''}</div>
 							</div>
 						</div>
-
+						<button
+							onClick={() => window.location.href = '/'}
+							className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all group"
+						>
+							<IconHomeEco className="w-5 h-5 text-gray-500 group-hover:text-red-500" />
+							<span className="font-medium">Home</span>
+						</button>
 						<button
 							onClick={handleLogout}
 							className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all group"
