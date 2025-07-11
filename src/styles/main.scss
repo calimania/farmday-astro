@@ -16,3 +16,7 @@
 @layer utilities {
   @include meta.load-css("utilities");
 }
+
+#dashboard-content * {
+  font-family: inherit;
+}
