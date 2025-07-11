@@ -375,3 +375,69 @@ export interface Product {
   stores?: Store[];
   Tag?: Tag[];
 }
+
+
+// Types for the portal
+export interface Order {
+  id: number;
+  documentId: string;
+  Amount: number;
+  Currency: string;
+  Status: string;
+  STRIPE_PAYMENT_ID: string;
+  uuid: string;
+  createdAt: string;
+  updatedAt: string;
+  Shipping_Address: {
+    id: number;
+    name: string;
+    email: string;
+    street: string;
+    street_2?: string;
+    city: string;
+    state: string;
+    country: string;
+    zipcode: string;
+  };
+  Details: OrderDetail[];
+}
+
+export interface OrderDetail {
+  id: number;
+  Name: string;
+  Quantity: number;
+  Price: number;
+  Short_description?: string;
+  product: Product;
+}
+
+export interface Product {
+  id: number;
+  documentId: string;
+  Name: string;
+  usd_price: number;
+  Description: string;
+  SKU: string;
+  slug: string;
+  Thumbnail: {
+    url: string;
+    formats?: {
+      thumbnail?: {
+        url: string;
+      };
+      small?: {
+        url: string;
+      };
+    };
+  };
+}
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  avatar?: string;
+  joinedDate: string;
+  totalInvestment: number;
+  activeShares: number;
+}

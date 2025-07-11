@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from 'react';
 
 export const Route = createFileRoute({
-  component: About,
+  component: DashboardIndex,
 });
 
 const fetchStore = async () => {
@@ -13,7 +13,7 @@ const fetchStore = async () => {
   return res.json();
 };
 
-function About() {
+function DashboardIndex() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["store"],
     queryFn: fetchStore,
@@ -42,4 +42,4 @@ function About() {
   );
 }
 
-export default About;
+export default DashboardIndex;

@@ -1,39 +1,36 @@
 ---
-import BaseLayout from "@components/base/BaseLayout.astro";
-import { Dashboard as ReactDashboard } from "../../routes/_app"
-import { type Route } from "@tanstack/react-router"
-import { routeTree } from "../../routes/routeTree.gen.ts"
+import DashboardLayout from "@components/base/DashboardLayout.astro";
+import { Dashboard as ReactDashboard } from "../../routes/_app";
+import { type Route } from "@tanstack/react-router";
+import { routeTree } from "../../routes/routeTree.gen.ts";
 import { getCollection } from "astro:content";
-import type { Store } from '../../markket/index.d';
+import type { Store } from "../../markket/index.d";
 
 const stores = await getCollection("store");
 const store = stores?.[0]?.data as any as Store;
 
-
 export async function getStaticPaths() {
   const mapChildren = (route: Route): any => {
     if (!route?.options) {
-      return []
+      return [];
     }
     return [
       route.options,
       ...Object.values(route?.children || []).flatMap((child) =>
         mapChildren(child)
       ),
-    ]
-  }
-  const asMapped = mapChildren(routeTree as unknown as Route)
+    ];
+  };
+  const asMapped = mapChildren(routeTree as unknown as Route);
   return asMapped.map((route: { path?: string }) => ({
     params: {
       // splice the prefixed `/dashboard` by the generator
       path: route.path?.split("/")?.splice(2)?.join("/"),
     },
-  }))
+  }));
 }
 ---
 
-<BaseLayout>
-  <main class="bg-gray-100 ">
-    <ReactDashboard client:only="react" />
-  </main>
-</BaseLayout>
+<DashboardLayout>
+  <ReactDashboard client:only="react" />
+</DashboardLayout>
