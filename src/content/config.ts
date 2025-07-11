@@ -190,7 +190,7 @@ const articles = defineCollection({
   loader: strapiLoader({
     contentType: "article",
     filter: `filters[store][slug][$eq]=${markketplace.store_slug}`,
-    populate: 'SEO.socialImage'
+    populate: 'SEO.socialImage,cover,Tags'
   }),
 });
 

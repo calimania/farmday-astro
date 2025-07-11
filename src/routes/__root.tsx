@@ -9,7 +9,7 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import type { AstroGlobal } from 'astro'
-import { useStore } from '../hooks/useApi';
+import { useStore, useMe, useOrders } from '../hooks/useApi';
 
 export const Route = createRootRouteWithContext<{
 	astroContext: AstroGlobal | undefined
@@ -26,15 +26,15 @@ import {
 	IconMenu2,
 	IconX,
 	IconTrendingUp,
-	IconMapPin
+	IconMapPin,
+	IconHomeEco
 } from '@tabler/icons-react';
 
 interface LayoutProps {
 	children: React.ReactNode;
-	activeTab: 'orders' | 'profile';
 }
 
-function Layout({ children, activeTab, }: LayoutProps) {
+function Layout({ }: LayoutProps) {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const router = useRouterState();
 	const navigate = useNavigate({ from: router.location.pathname })
@@ -46,16 +46,29 @@ function Layout({ children, activeTab, }: LayoutProps) {
 		error: storeErrorDetails
 	} = useStore();
 
+	const {
+		data: myResponse,
+	} = useMe();
+
+	const {
+		data: ordersResponse,
+	} = useOrders();
+
 	const store = storeResponse?.data?.[0];
 
-	console.log({ store })
-
 	const navigation = [
+		{
+			id: 'dashboard' as const,
+			name: 'Dashboard',
+			icon: IconDashboard,
+			description: 'investment overview and voting',
+			path: '/portal'
+		},
 		{
 			id: 'orders' as const,
 			name: 'My Investments',
 			icon: IconReceipt,
-			description: 'View your fractional ownership purchases',
+			description: 'Order details',
 			path: '/portal/investments'
 		},
 		{
@@ -67,10 +80,11 @@ function Layout({ children, activeTab, }: LayoutProps) {
 		},
 	];
 
+	const activeTab = navigation.find((n) => n.path == router.location.pathname)
+
 	const handleLogout = () => {
-		// Placeholder for logout functionality
 		localStorage.removeItem('farmday.auth');
-		window.history.replaceState({}, 'auth', '/auth');
+		window.history.pushState({}, 'auth', '/auth');
 	};
 
 	return (
@@ -112,7 +126,7 @@ function Layout({ children, activeTab, }: LayoutProps) {
 					<nav className="flex-1 p-6 space-y-2">
 						{navigation.map((item) => {
 							const Icon = item.icon;
-							const isActive = router.location.pathname === item.path;
+							const isActive = activeTab?.path === item.path;
 
 							return (
 								<button
@@ -149,11 +163,17 @@ function Layout({ children, activeTab, }: LayoutProps) {
 								<span className="text-white font-semibold text-sm">JD</span>
 							</div>
 							<div className="flex-1">
-								<div className="font-medium text-gray-900">John Doe</div>
-								<div className="text-sm text-gray-500">Investor</div>
+								<div className="font-medium text-gray-900">{myResponse?.displayName || myResponse?.email}</div>
+								<div className="text-sm text-gray-500">{ordersResponse?.length ? 'Investor' : ''}</div>
 							</div>
 						</div>
-
+						<button
+							onClick={() => window.location.href = '/'}
+							className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all group"
+						>
+							<IconHomeEco className="w-5 h-5 text-gray-500 group-hover:text-red-500" />
+							<span className="font-medium">Home</span>
+						</button>
 						<button
 							onClick={handleLogout}
 							className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all group"
@@ -180,13 +200,10 @@ function Layout({ children, activeTab, }: LayoutProps) {
 
 							<div>
 								<h2 className="text-2xl font-bold text-gray-900">
-									{activeTab === 'orders' ? 'My Investments' : 'Profile Settings'}
+									{activeTab?.name}
 								</h2>
 								<p className="text-sm text-gray-500">
-									{activeTab === 'orders'
-										? 'Track your fractional ownership investments'
-										: 'Manage your account and preferences'
-									}
+									{activeTab?.description}
 								</p>
 							</div>
 						</div>

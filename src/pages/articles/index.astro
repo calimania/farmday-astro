@@ -1,0 +1,45 @@
+---
+import BaseLayout from "@/components/base/BaseLayout.astro";
+import ArticleList from "@/components/articles/ArticleList.astro";
+import { getCollection } from "astro:content";
+import { IconRocket, IconSparkles } from "@tabler/icons-react";
+import Blocks from "@/components/ui.content";
+
+const articles = await getCollection("articles");
+
+const page = (await getCollection("pages"))?.find(
+  (page) => page.data.slug == "blog"
+)?.data;
+---
+
+<BaseLayout>
+  <header class="text-center mb-16">
+    <div class="flex items-center justify-center mb-6">
+      <div
+        class="p-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl shadow-lg"
+      >
+        <IconRocket size={32} className="text-white" />
+      </div>
+    </div>
+
+    <h1
+      class="text-5xl md:text-6xl font-black bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent mb-6"
+    >
+      {page?.Title || "blog"}
+    </h1>
+
+    <div class="text-gray-600 max-w-2xl mx-auto leading-relaxed">
+      <Blocks params={{ page: page }} />
+    </div>
+
+    <div class="flex items-center justify-center mt-6">
+      <IconSparkles size={20} className="text-purple-500 mr-2" />
+      <span class="text-purple-600 font-semibold">
+        Dispatches from our farms and founders
+      </span>
+      <IconSparkles size={20} className="text-purple-500 ml-2" />
+    </div>
+  </header>
+
+  <ArticleList articles={articles} title="Our Blog" showLoadMore={false} />
+</BaseLayout>

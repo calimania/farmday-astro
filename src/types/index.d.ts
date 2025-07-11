@@ -14,6 +14,11 @@ export type PortfolioEntry = CollectionEntry<"portfolio">;
 export type RecipesEntry = CollectionEntry<"recipes">;
 export type TermsEntry = CollectionEntry<"terms">;
 
+
+export type ArticleEntry = CollectionEntry<"articles">;
+export type PageEntry = CollectionEntry<"pages">;
+export type StoreEntry = CollectionEntry<"store">;
+
 export type SearchableEntry =
   | AboutEntry
   | AuthorsEntry

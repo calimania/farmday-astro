@@ -1,7 +1,7 @@
 import { markketplace } from "../config";
 import React from 'react';
 import type { Page, ContentBlock , Album, AlbumTrack, Article } from "../markket/index.d";
-
+import type { PageEntry, ArticleEntry } from '@/types/index';
 
 const Title = ({ order = 1, children, className = "" }: { order: 1 | 2 | 3 | 4 | 5 | 6, children: React.ReactNode, className?: string }) => {
 
@@ -51,8 +51,8 @@ const CodeHighlight = ({ code, language = "typescript", copyLabel = "Copy" }: { 
 
 interface PageContentProps {
   params: {
-    page?: Page;
-    post?: Article;
+    page?: Page | PageEntry['data'];
+    post?: Article | ArticleEntry['data'];
     album?: Album;
     track?: AlbumTrack;
   };
@@ -65,7 +65,7 @@ interface PageContentProps {
  * @returns { JSX.Element }
  */
 export default function PageContent({ params, }: PageContentProps) {
-  const content = params?.page?.Content || params?.post?.Content || params?.album?.content || params?.track?.content;
+  const content = params?.page?.Content || params?.post?.Content || params?.album?.content || params?.track?.content || params?.article?.Content;
   const renderedImages = new Set<string>();
 
   if (!content?.length) {

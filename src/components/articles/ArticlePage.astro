@@ -1,0 +1,177 @@
+---
+import type { ArticleEntry as Article } from "@/types/index.d";
+import {
+  IconCalendar,
+  IconArrowLeft,
+  IconShare,
+  IconHeart,
+  IconBookmark,
+} from "@tabler/icons-react";
+import Blocks from "@components/ui.content";
+
+export interface Props {
+  article: Article["data"];
+}
+
+const { article } = Astro.props;
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
+const getImageUrl = (cover: Article["data"]["cover"]) => {
+  return cover?.url;
+};
+
+const imageUrl = getImageUrl(article.cover);
+---
+
+<article class="min-h-[60vh]">
+  <div class="max-w-4xl mx-auto px-6 py-12">
+    <!-- Back Button -->
+    <div class="mb-8">
+      <a
+        href="/articles"
+        class="inline-flex items-center text-purple-600 hover:text-purple-700 font-semibold transition-colors group"
+      >
+        <IconArrowLeft
+          size={20}
+          className="mr-2 group-hover:-translate-x-1 transition-transform duration-300"
+        />
+         Back to Articles
+      </a>
+    </div>
+
+    <!-- Article Header -->
+    <header class="mb-12">
+      <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
+        <div class="flex items-center text-gray-600">
+          <IconCalendar size={20} className="mr-2" />
+          <time datetime={article.publishedAt} class="font-medium">
+            {formatDate(article.publishedAt)}
+          </time>
+        </div>
+
+        {
+          article.Tags && article.Tags.length > 0 && (
+            <div class="flex gap-2 flex-wrap">
+              {article.Tags.map((tag) => (
+                <span
+                  key={tag.id}
+                  class="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold rounded-full shadow-md"
+                >
+                  {tag.name}
+                </span>
+              ))}
+            </div>
+          )
+        }
+      </div>
+
+      <h1
+        class="text-4xl md:text-6xl font-black bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent mb-6 leading-tight"
+      >
+        {article.Title}
+      </h1>
+
+      {
+        article.SEO?.metaDescription && (
+          <p class="text-xl text-gray-700 leading-relaxed max-w-3xl">
+            {article.SEO.metaDescription}
+          </p>
+        )
+      }
+    </header>
+
+    <!-- Hero Image -->
+    <div class="relative mb-12 rounded-3xl overflow-hidden shadow-2xl">
+      <img
+        src={imageUrl}
+        alt={article.Title}
+        class="w-full h-96 md:h-[500px] object-cover"
+      />
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"
+      >
+      </div>
+    </div>
+
+    <!-- Article Actions -->
+    <!-- <div
+      class="flex items-center justify-between mb-12 p-6 bg-white rounded-2xl shadow-lg border border-gray-100"
+    >
+      <div class="flex items-center gap-4">
+        <button
+          class="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-red-500 transition-colors group"
+        >
+          <IconHeart
+            size={20}
+            className="group-hover:scale-110 transition-transform"
+          />
+          <span class="font-medium">Like</span>
+        </button>
+        <button
+          class="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-purple-500 transition-colors group"
+        >
+          <IconBookmark
+            size={20}
+            className="group-hover:scale-110 transition-transform"
+          />
+          <span class="font-medium">Save</span>
+        </button>
+      </div>
+
+      <button
+        class="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 group"
+      >
+        <IconShare
+          size={20}
+          className="group-hover:rotate-12 transition-transform"
+        />
+         Share
+      </button>
+    </div> -->
+
+    <!-- Content Area -->
+    <div class="prose prose-lg max-w-none mb-16">
+      <div
+        class="bg-gradient-to-r from-purple-100 to-pink-100 border-l-4 border-purple-500 rounded-r-2xl p-8 mb-8"
+      >
+        <h3 class="text-2xl font-bold text-purple-900 mb-4">
+          🚀 Content Implementation Needed
+        </h3>
+        <Blocks params={{ post: article }} />
+      </div>
+    </div>
+  </div>
+
+  <!-- Article Footer -->
+  <footer class="border-t border-gray-200 pt-12">
+    <div class="flex items-center justify-between flex-wrap gap-6">
+      <a
+        href="/articles"
+        class="inline-flex items-center px-6 py-3 bg-white border-2 border-purple-200 text-purple-600 font-semibold rounded-xl hover:bg-purple-50 transition-colors group"
+      >
+        <IconArrowLeft
+          size={20}
+          className="mr-2 group-hover:-translate-x-1 transition-transform duration-300"
+        />
+         More Articles
+      </a>
+
+      <div class="text-center">
+        <p class="text-gray-600 mb-2">Loved this article?</p>
+        <a
+          href="/subscribe"
+          class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+        >
+          Subscribe for More 🔥
+        </a>
+      </div>
+    </div>
+  </footer>
+</article>
