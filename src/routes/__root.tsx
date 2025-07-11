@@ -31,10 +31,9 @@ import {
 
 interface LayoutProps {
 	children: React.ReactNode;
-	activeTab: 'orders' | 'profile';
 }
 
-function Layout({ children, activeTab, }: LayoutProps) {
+function Layout({ }: LayoutProps) {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const router = useRouterState();
 	const navigate = useNavigate({ from: router.location.pathname })
@@ -52,10 +51,17 @@ function Layout({ children, activeTab, }: LayoutProps) {
 
 	const navigation = [
 		{
+			id: 'dashboard' as const,
+			name: 'Dashboard',
+			icon: IconDashboard,
+			description: 'investment overview and voting',
+			path: '/portal'
+		},
+		{
 			id: 'orders' as const,
 			name: 'My Investments',
 			icon: IconReceipt,
-			description: 'View your fractional ownership purchases',
+			description: 'Order details',
 			path: '/portal/investments'
 		},
 		{
@@ -67,10 +73,11 @@ function Layout({ children, activeTab, }: LayoutProps) {
 		},
 	];
 
+	const activeTab = navigation.find((n) => n.path == router.location.pathname)
+
 	const handleLogout = () => {
-		// Placeholder for logout functionality
 		localStorage.removeItem('farmday.auth');
-		window.history.replaceState({}, 'auth', '/auth');
+		window.history.pushState({}, 'auth', '/auth');
 	};
 
 	return (
@@ -112,7 +119,7 @@ function Layout({ children, activeTab, }: LayoutProps) {
 					<nav className="flex-1 p-6 space-y-2">
 						{navigation.map((item) => {
 							const Icon = item.icon;
-							const isActive = router.location.pathname === item.path;
+							const isActive = activeTab?.path === item.path;
 
 							return (
 								<button
@@ -180,13 +187,10 @@ function Layout({ children, activeTab, }: LayoutProps) {
 
 							<div>
 								<h2 className="text-2xl font-bold text-gray-900">
-									{activeTab === 'orders' ? 'My Investments' : 'Profile Settings'}
+									{activeTab?.name}
 								</h2>
 								<p className="text-sm text-gray-500">
-									{activeTab === 'orders'
-										? 'Track your fractional ownership investments'
-										: 'Manage your account and preferences'
-									}
+									{activeTab?.description}
 								</p>
 							</div>
 						</div>
