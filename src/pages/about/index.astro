@@ -12,7 +12,8 @@ const aboutPage = pages?.find((page) => page?.data?.slug === "about")?.data;
 const relatedPages = pages
   ?.filter(
     (page) =>
-      page?.data?.slug !== "about" && !page?.data?.SEO?.excludeFromSearch
+      !["about", "home"].includes(page?.data?.slug) &&
+      !page?.data?.SEO?.excludeFromSearch
   )
   .map((page) => page.data);
 
