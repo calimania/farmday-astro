@@ -1,0 +1,53 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@components/base/BaseLayout.astro";
+import type {
+  ArticleEntry as Article,
+  StoreEntry as Store,
+  PageEntry as Page,
+} from "@/types/index";
+import ArticlePage from "@/components/articles/ArticlePage.astro";
+import ArticleList from "@components/articles/ArticleList.astro";
+
+export interface Props {
+  page: Page;
+  store: Store;
+  relatedArticles: Article[];
+  article: Article["data"];
+}
+
+export async function getStaticPaths() {
+  const pages = await getCollection("pages");
+  const articles = await getCollection("articles");
+  const stores = await getCollection("store");
+  const store = stores?.[0]?.data as Store["data"];
+
+  const page = pages?.find((page) => page.data.slug == "blog")?.data;
+
+  return articles?.map((article) => {
+    const relatedArticles = articles
+      .filter((a) => a?.data?.slug != article?.data?.slug)
+      .splice(0, 2);
+
+    return {
+      params: {
+        slug: article.data.slug,
+      },
+      props: {
+        page,
+        store,
+        relatedArticles,
+        article: article.data,
+      },
+    };
+  });
+}
+
+const { page, article, relatedArticles } = Astro.props;
+---
+
+<BaseLayout>
+  <ArticlePage article={article} />
+
+  <ArticleList articles={relatedArticles} />
+</BaseLayout>

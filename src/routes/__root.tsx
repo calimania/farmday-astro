@@ -56,8 +56,6 @@ function Layout({ }: LayoutProps) {
 
 	const store = storeResponse?.data?.[0];
 
-	console.log({ store, myResponse, ordersResponse })
-
 	const navigation = [
 		{
 			id: 'dashboard' as const,

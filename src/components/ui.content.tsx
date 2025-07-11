@@ -65,7 +65,7 @@ interface PageContentProps {
  * @returns { JSX.Element }
  */
 export default function PageContent({ params, }: PageContentProps) {
-  const content = params?.page?.Content || params?.post?.Content || params?.album?.content || params?.track?.content;
+  const content = params?.page?.Content || params?.post?.Content || params?.album?.content || params?.track?.content || params?.article?.Content;
   const renderedImages = new Set<string>();
 
   if (!content?.length) {
