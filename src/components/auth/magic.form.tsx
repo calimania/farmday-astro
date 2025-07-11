@@ -2,6 +2,7 @@ import type { Store, Page } from "@/markket";
 import React, { useState } from "react";
 import { markketplace } from "@/config";
 import { IconAlertCircle, IconCheck, IconMail, IconRotateClockwise2 as Loader2, } from "@tabler/icons-react";
+import Blocks from "@components/ui.content";
 
 interface MagicLinkFormProps {
   store: Store,
@@ -20,17 +21,16 @@ const MagicLinkForm: React.FC<MagicLinkFormProps> = ({ page, store }) => {
     setMessage("");
 
     try {
-      const res = await fetch(new URL(`/api/auth-magic/request`, markketplace.api), {
+      const res = await fetch(new URL(`/api/markket?path=/api/auth-magic/request`, markketplace.markket), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "accept": "*/*",
+          "Accept": "*/*",
         },
         body: JSON.stringify({
           email: email.trim().toLowerCase(),
           store_id: store?.documentId,
         }),
-        credentials: 'include'
       });
 
       const data = await res.json();
@@ -154,6 +154,9 @@ const MagicLinkForm: React.FC<MagicLinkFormProps> = ({ page, store }) => {
           <p className="text-xs text-gray-500">
             We'll send you a secure link that expires in 15 minutes
           </p>
+          <div className="m-auto max-w-[400px]">
+            <Blocks params={{ page }} />
+          </div>
         </div>
       </div>
     </div>

@@ -1,10 +1,9 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@components/base/BaseLayout.astro";
-import Blocks from "@components/ui.content";
 import { Image } from "astro:assets";
 import type { Page, Store } from "@/markket";
-import MagicLinkForm from "@components/auth/magic.form";
+import MagicLinkPage from "@components/auth/magic.page";
 
 const pages = await getCollection("pages");
 
@@ -24,23 +23,20 @@ const store = storeEntry?.data as unknown as Store;
             store?.Logo?.url && (
               <div class="blur-[0px]">
                 <Image
-                  class="mb-6 w-64"
+                  class="mb-2"
                   src={store?.Logo?.url}
                   alt={store?.Logo?.alternativeText || store?.title}
-                  width={180}
-                  height={180}
+                  width={60}
+                  height={600}
                   loading="eager"
                 />
               </div>
             )
           }
-          <h1 class="mb-4">{store?.title}</h1>
-          <div
-            class="mb-8 mt-4 bg-white bg-opacity-90 rounded-sm text-left p-6"
-          >
-            <Blocks params={{ page: magicPage }} />
-
-            <MagicLinkForm client:load store={store} page={magicPage} />
+          <h1 class="mb-4 text-sm">{store?.title}</h1>
+          <!-- bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center p-4 -->
+          <div class="justify-center mb-8 mt-4 rounded-sm text-left p-6">
+            <MagicLinkPage client:load store={store} page={magicPage} />
           </div>
         </div>
       </div>

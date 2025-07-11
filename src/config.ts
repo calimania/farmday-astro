@@ -1,5 +1,7 @@
 export const markketplace = {
+  /** calimania/markketplace @TODO: remove and use the proxy from markket-next */
   api: import.meta.env.STRAPI_URL || 'https://markket.farmday.io',
+  /** calimania/markket-next */
   markket: import.meta.env.MARKKET_URL || 'https://api.farmday.io',
   store_slug: import.meta.env.STORE_SLUG || 'farmday',
   markketplace: import.meta.env.MARKKETPLACE_URL || 'https://de.markket.place',
