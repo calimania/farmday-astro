@@ -10,9 +10,15 @@ const articles = await getCollection("articles");
 const page = (await getCollection("pages"))?.find(
   (page) => page.data.slug == "blog"
 )?.data;
+
+const SEO = page?.SEO;
 ---
 
-<BaseLayout>
+<BaseLayout
+  image={SEO?.socialImage?.url}
+  description={SEO?.metaDescription}
+  title={SEO?.metaTitle}
+>
   <header class="text-center mb-16">
     <div class="flex items-center justify-center mb-6">
       <div
