@@ -1,26 +1,32 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@components/base/BaseLayout.astro";
-import type { Product, Store } from "@/markket";
+
 import ProductPage from "@/components/projects/projectPage";
 
-const { slug } = Astro.params;
-const product = (await getCollection("products"))?.find(
-  (p) => p?.data?.slug === slug
-)?.data as unknown as Product;
+const { product, SEO } = Astro.props;
 
-const store = (await getCollection("store"))?.[0]?.data as unknown as Store;
+const store = (await getCollection("store"))?.[0]?.data;
 
 export async function getStaticPaths() {
   const products = await getCollection("products");
   return products.map((product) => ({
-    params: { slug: product.data.slug },
-    props: {},
+    params: {
+      slug: product.data.slug,
+    },
+    props: {
+      product: product.data,
+      SEO: product.data?.SEO,
+    },
   }));
 }
 ---
 
-<BaseLayout>
+<BaseLayout
+  image={SEO?.socialImage?.url}
+  description={SEO?.metaDescription}
+  title={SEO?.metaTitle}
+>
   <section class="max-w-[1200px] mx-auto py-12">
     <div class="container mx-auto">
       <div class="mx-auto rounded-2xl bg-white/80 shadow-xl p-8">

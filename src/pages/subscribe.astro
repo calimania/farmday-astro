@@ -12,9 +12,14 @@ const page = (await getCollection("pages"))?.find(
 )?.data;
 
 const store = (await getCollection("store"))?.[0]?.data;
+const SEO = page?.SEO;
 ---
 
-<BaseLayout>
+<BaseLayout
+  image={SEO?.image}
+  description={SEO?.metaDescription}
+  title={SEO?.metaTitle}
+>
   <section class="section">
     <div class="container">
       <div class="row justify-center">
@@ -41,8 +46,8 @@ const store = (await getCollection("store"))?.[0]?.data;
           </div>
         </div>
         <div class="relative pt-20 pb-16 px-4">
-         <SubscribeForm client:load store={store as any} />
-       </div>
+          <SubscribeForm client:load store={store as any} />
+        </div>
       </div>
     </div>
   </section>

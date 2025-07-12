@@ -10,7 +10,7 @@ import ArticlePage from "@/components/articles/ArticlePage.astro";
 import ArticleList from "@components/articles/ArticleList.astro";
 
 export interface Props {
-  page: Page;
+  page: Page["data"];
   store: Store;
   relatedArticles: Article[];
   article: Article["data"];
@@ -44,9 +44,18 @@ export async function getStaticPaths() {
 }
 
 const { page, article, relatedArticles } = Astro.props;
+const SEO = {
+  metaTitle: article?.SEO?.metaTitle || page?.SEO?.metaTitle,
+  metaDescription: article?.SEO?.metaDescription || page?.SEO?.metaDescription,
+  image: article?.SEO?.socialImage?.url || page?.SEO?.socialImage?.url,
+};
 ---
 
-<BaseLayout>
+<BaseLayout
+  image={SEO?.image}
+  description={SEO?.metaDescription}
+  title={SEO?.metaTitle}
+>
   <ArticlePage article={article} />
 
   <ArticleList articles={relatedArticles} />

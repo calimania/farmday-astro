@@ -7,14 +7,25 @@ import { href } from "../about/index.astro";
 
 const pages = await getCollection("pages");
 
-const relatedPages = pages
-  ?.filter((page) => /^(auth|portal)/.test(page?.data?.slug || ""))
+const authPages = pages
+  ?.filter((page) => /^(auth)/.test(page?.data?.slug || ""))
   .map((page) => page.data);
 
+const portalPages = pages
+  ?.filter((page) => /^(portal)/.test(page?.data?.slug || ""))
+  .map((page) => page.data);
+
+const relatedPages = [...authPages, ...portalPages];
+
 const store = (await getCollection("store"))?.[0]?.data;
+const SEO = relatedPages?.[0]?.SEO;
 ---
 
-<BaseLayout>
+<BaseLayout
+  image={SEO?.socialImage?.url}
+  description={SEO?.metaDescription}
+  title={SEO?.metaTitle}
+>
   <section class="about-page">
     <div class="container">
       <div class="row justify-center">
