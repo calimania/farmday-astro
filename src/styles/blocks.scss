@@ -6,13 +6,12 @@ $markket-pink: #e4007c;
 $markket-cyan: #00ffff;
 
 
-.blocks-content {
-
+.blocks-content.blocks-content {
   h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
-    background: linear-gradient(90deg, $markket-blue, $markket-pink);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background: linear-gradient(90deg, $markket-blue, $markket-pink) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
   }
 
   strong { }
