@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import {
   IconShoppingCart,
-  // IconHeart,
   IconTag,
   IconClock,
   IconChevronLeft,
   IconChevronRight,
-  // IconMapPin,
   IconX,
   IconCreditCard,
   IconCheck
 } from '@tabler/icons-react';
 import { markdownify } from "@lib/textConverter";
-import type { Product, Store } from '@/markket';
-import { createPaymentLink, type PaymentLinkOptions } from "@/markket/payment.ts";
+import type { ProductEntry as Product, StoreEntry as Store } from '@/types/index';
+import { createPaymentLink } from "@/markket/payment.ts";
 import { markketplace } from '@/config';
 
 const formatDescription = (description: string) => {
@@ -25,7 +23,7 @@ const formatDescription = (description: string) => {
  * @param param0
  * @returns
  */
-const ProductDisplay: React.FC<{ product: Product, store: Store }> = ({ product, store }) => {
+const ProductDisplay: React.FC<{ product: Product["data"], store: Store["data"] }> = ({ product, store }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedPrice, setSelectedPrice] = useState(0);
   // const [isLiked, setIsLiked] = useState(false);
@@ -40,7 +38,7 @@ const ProductDisplay: React.FC<{ product: Product, store: Store }> = ({ product,
   }
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % product.Slides.length);
+    setCurrentSlide((prev) => (prev + 1) % product.Slides?.length);
   };
 
   const prevSlide = () => {

@@ -13,9 +13,14 @@ const page = (await getCollection("pages"))?.find(
 )?.data;
 
 const store = (await getCollection("store"))?.[0]?.data;
+const SEO = page?.SEO;
 ---
 
-<BaseLayout>
+<BaseLayout
+  image={SEO?.socialImage?.url}
+  description={SEO?.metaDescription}
+  title={SEO?.metaTitle}
+>
   <section class="section">
     <div class="container">
       <div class="row justify-center">

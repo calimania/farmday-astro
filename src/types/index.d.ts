@@ -18,6 +18,7 @@ export type TermsEntry = CollectionEntry<"terms">;
 export type ArticleEntry = CollectionEntry<"articles">;
 export type PageEntry = CollectionEntry<"pages">;
 export type StoreEntry = CollectionEntry<"store">;
+export type ProductEntry = CollectionEntry<"products">;
 
 export type SearchableEntry =
   | AboutEntry
