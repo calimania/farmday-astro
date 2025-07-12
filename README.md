@@ -26,7 +26,6 @@ Astrogon is a rapidly-customizable multipurpose website template built using Ast
 - And more:
   - Homepage
   - About/Bio
-  - Portfolio
   - Terms and Conditions
   - 404 page
 
