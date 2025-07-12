@@ -12,9 +12,14 @@ const magicPage = pages?.find((page) => page?.data?.slug == "auth.magic")
 
 const storeEntry = (await getCollection("store"))?.[0];
 const store = storeEntry?.data as unknown as Store;
+const SEO = magicPage?.SEO;
 ---
 
-<BaseLayout>
+<BaseLayout
+  image={SEO?.socialImage?.url}
+  description={SEO?.metaDescription}
+  title={SEO?.metaTitle}
+>
   <section class="about-page">
     <div class="container">
       <div class="row justify-center">
