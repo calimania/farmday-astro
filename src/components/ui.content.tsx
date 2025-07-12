@@ -5,7 +5,7 @@ import type { PageEntry, ArticleEntry } from '@/types/index';
 
 const Title = ({ order = 1, children, className = "" }: { order: 1 | 2 | 3 | 4 | 5 | 6, children: React.ReactNode, className?: string }) => {
 
-  const baseStyle = "font-bold bg-gradient-to-r from-blue-600 to-pink-600 bg-clip-text text-transparent";
+  const baseStyle = "font-bold bg-gradient-to-r from-blue-600 to-pink-600 bg-clip-text text-transparent dark:text-gray-700";
   const sizeStyles = {
     1: "text-4xl md:text-5xl mb-8",
     2: "text-3xl md:text-4xl mb-6",

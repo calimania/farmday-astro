@@ -34,16 +34,17 @@ const SEO = page?.SEO;
       {page?.Title || "blog"}
     </h1>
 
-    <div class="text-gray-600 max-w-2xl mx-auto leading-relaxed">
+    <div
+      class="text-gray-600 max-w-lg bg-white bg-opacity-90 rounded-sm mx-auto leading-relaxed py-8 mt-4"
+    >
       <Blocks params={{ page: page }} />
-    </div>
-
-    <div class="flex items-center justify-center mt-6">
-      <IconSparkles size={20} className="text-purple-500 mr-2" />
-      <span class="text-purple-600 font-semibold">
-        Dispatches from our farms and founders
-      </span>
-      <IconSparkles size={20} className="text-purple-500 ml-2" />
+      <div class="flex items-center justify-center mt-6">
+        <IconSparkles size={20} className="text-purple-500 mr-2" />
+        <span class="text-purple-600 font-semibold">
+          Dispatches from our farms and founders
+        </span>
+        <IconSparkles size={20} className="text-purple-500 ml-2" />
+      </div>
     </div>
   </header>
 

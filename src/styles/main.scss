@@ -3,6 +3,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('./blocks.scss');
+
 @layer base {
   @include meta.load-css("base");
   @include meta.load-css("fonts");
@@ -20,3 +22,5 @@
 #dashboard-content * {
   font-family: inherit;
 }
+
+@custom-variant dark  (&:where(.dark, .dark *));

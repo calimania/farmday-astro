@@ -7,7 +7,8 @@ import {
   IconChevronRight,
   IconX,
   IconCreditCard,
-  IconCheck
+  IconCheck,
+  IconAlertHexagonOff
 } from '@tabler/icons-react';
 import { markdownify } from "@lib/textConverter";
 import type { ProductEntry as Product, StoreEntry as Store } from '@/types/index';
@@ -173,7 +174,7 @@ const ProductDisplay: React.FC<{ product: Product["data"], store: Store["data"] 
               {/* Title and Tags */}
               <div className="space-y-4">
                 <div className="flex items-start justify-between">
-                  <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+                  <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight dark:text-gray-800">
                     {product.Name}
                   </h1>
                   {/* <button
@@ -207,10 +208,14 @@ const ProductDisplay: React.FC<{ product: Product["data"], store: Store["data"] 
               {/* Pricing */}
               <div className="space-y-4">
                 <div className="flex items-baseline space-x-3">
-                  <span className="text-4xl font-bold text-gray-900">
-                    {formatPrice(product.usd_price as number)}
-                  </span>
-                  <span className="text-lg text-gray-500">USD</span>
+                  {product.usd_price > 0 && (
+                    <>
+                      <span className="text-4xl font-bold text-gray-900">
+                        {formatPrice(product.usd_price as number)}
+                      </span>
+                      <span className="text-lg text-gray-500">USD</span>
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -219,9 +224,10 @@ const ProductDisplay: React.FC<{ product: Product["data"], store: Store["data"] 
                 <button
                   onClick={() => setShowCheckoutModal(true)}
                   className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-xl transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+                  disabled={!(product.usd_price > 0)}
                 >
                   <div className="flex items-center justify-center space-x-2">
-                    <IconShoppingCart className="w-5 h-5" />
+                    {product.usd_price > 0 ? <IconShoppingCart className="w-5 h-5" /> : <IconAlertHexagonOff />}
                     <span>Checkout</span>
                   </div>
                 </button>
@@ -233,7 +239,7 @@ const ProductDisplay: React.FC<{ product: Product["data"], store: Store["data"] 
                 <div className="space-y-3">
                   <h3 className="text-lg font-semibold text-gray-900">About this product</h3>
                   <div
-                    className="text-gray-600 leading-relaxed prose prose-sm max-w-none prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline"
+                    className="blocks-content text-gray-600 leading-relaxed prose prose-sm max-w-none prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline"
                     dangerouslySetInnerHTML={{
                       __html: formatDescription(product.Description as string) as string,
                     }}

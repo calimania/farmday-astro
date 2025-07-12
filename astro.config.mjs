@@ -6,7 +6,7 @@ import AutoImport from "astro-auto-import";
 import { defineConfig } from "astro/config";
 import remarkCollapse from "remark-collapse";
 import remarkToc from "remark-toc";
-import rehypeKatex from "rehype-katex";
+// import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
 
@@ -44,7 +44,7 @@ export default defineConfig({
     remarkPlugins: [remarkToc, [remarkCollapse, {
       test: "Table of contents"
     }], remarkMath],
-    rehypePlugins: [[rehypeKatex, {}]],
+    // rehypePlugins: [[rehypeKatex, {}]],
     shikiConfig: {
       themes: { // https://shiki.style/themes
         light: "light-plus",
