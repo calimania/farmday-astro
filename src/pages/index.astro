@@ -1,14 +1,23 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@components/base/BaseLayout.astro";
-import { markdownify } from "@lib/textConverter";
+import Blocks from "@components/ui.content";
 import Button from "@components/common/Button.astro";
 import { Image } from "astro:assets";
+import type { PageEntry } from "@/types/index";
 
 const store = (await getCollection("store"))?.[0]?.data;
+
+const pages = await getCollection("pages");
+const homePage = pages?.find((p: PageEntry) => p.data.slug == "home")?.data;
+const SEO = homePage?.SEO;
 ---
 
-<BaseLayout>
+<BaseLayout
+  image={SEO?.socialImage?.url}
+  description={SEO?.metaDescription}
+  title={SEO?.metaTitle}
+>
   <section class="section">
     <div class="container">
       <div class="row justify-center">
@@ -28,10 +37,10 @@ const store = (await getCollection("store"))?.[0]?.data;
             )
           }
           <h1 class="mb-4">{store?.title}</h1>
-          <div
-            set:html={markdownify(store?.Description, true)}
-            class="mb-8 mt-4"
-          />
+          <div class="mb-8 mt-4">
+            <Blocks params={{ page: homePage }} />
+          </div>
+
           {
             store.URLS?.map((button: any) => (
               <Button

@@ -2,7 +2,7 @@
 import { plainify } from "@lib/textConverter";
 import Footer from "@components/base/Footer.astro";
 import Header from "@components/base/Header.astro";
-import ObserverScript from "@components/base/ObserverScript.astro";
+// import ObserverScript from "@components/base/ObserverScript.astro";
 import "@/styles/main.scss";
 import "@/styles/blocks.scss";
 import { ClientRouter } from "astro:transitions";
@@ -95,20 +95,14 @@ const baseUrl = markketplace.url;
       property="og:url"
       content={`${baseUrl}/${Astro.url.pathname.replace("/", "")}`}
     />
-    <meta
-      property="og:image"
-      content={`${baseUrl}${image ? image : siteImage}`}
-    />
+    <meta property="og:image" content={`${image ? image : siteImage}`} />
 
     <meta name="twitter:title" content={plainify(title ? title : siteTitle)} />
     <meta
       name="twitter:description"
       content={plainify(description ? description : siteDescription)}
     />
-    <meta
-      name="twitter:image"
-      content={`${baseUrl}${image ? image : siteImage}`}
-    />
+    <meta name="twitter:image" content={`${image ? image : siteImage}`} />
     <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Katex -->
